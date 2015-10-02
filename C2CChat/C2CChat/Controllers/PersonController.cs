@@ -2,6 +2,7 @@
 
 namespace C2CChat.Controllers
 {
+    [Authorize]
     public class PersonController : Controller
     {
         //

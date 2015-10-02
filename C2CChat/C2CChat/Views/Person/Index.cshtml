@@ -1,0 +1,79 @@
+﻿@model C2CChat.Models.Person
+
+@{
+    ViewBag.Title = "Person";
+}
+
+<h2>Person</h2>
+
+<form data-bind="submit: createPerson">
+    @Html.ValidationSummary(true)
+
+    <div id="error" class="validation-summary-errors"></div>
+
+    <fieldset>
+        <legend>Person</legend>
+
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.FirstName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.FirstName,  new { @data_bind = "value: newPersonFirstName" })
+            @Html.ValidationMessageFor(model => model.FirstName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.LastName)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.LastName, new { @data_bind = "value: newPersonLastName" })
+            @Html.ValidationMessageFor(model => model.LastName)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Email)
+        </div>
+        <div class="editor-field">
+            @Html.TextBoxFor(model => model.Email, new { @data_bind = "value: newPersonEmail" })
+            @Html.ValidationMessageFor(model => model.Email)
+        </div>
+
+        <p>
+            <input type="submit" value="Add Person" />
+        </p>
+    </fieldset>
+</form>
+
+<h2>People</h2>
+<table data-bind="template: { name: 'personTemplate', foreach: people }, visible: people().length > 0">
+    <thead>
+        <tr>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+        </tr>
+    </thead>
+</table>
+
+<script type="text/html" id="personTemplate">
+    <!--Data Template-->
+    <tr>
+        <td><input class="ui-corner-all" data-bind="value: firstName, valueUpdate: 'afterkeydown'" /></td>
+        <td><input class="ui-corner-all" data-bind="value: lastName, valueUpdate: 'afterkeydown'" /></td>
+        <td><input class="ui-corner-all" data-bind="value: email, valueUpdate: 'afterkeydown'" /></td>
+        <td><input class="ui-button" type="button" href="#" data-bind="click: removePerson" value="Delete" /></td>
+    </tr>
+</script>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    
+<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="/signalr/hubs" type="text/javascript"></script>
+<script src="~/Scripts/knockout-3.3.0.js"></script>
+
+    <script src="~/Scripts/PersonManager.js"></script>
+}

@@ -1,0 +1,110 @@
+﻿@model C2CChat.Models.ChatMessage
+@using Microsoft.AspNet.Identity;
+@{
+    ViewBag.Title = "Index";
+
+}
+
+
+<link href="~/Content/ChatDesign/css/style.css" rel="stylesheet" />
+
+
+<h1>Chat Support</h1>
+
+@{
+    if(User.Identity.IsAuthenticated)
+    {
+        <div class="window col-lg-12">
+    
+    <section class="chat-view">
+        <header class="chat-view__header">
+            <div class="cf">
+                <div class="status">
+                    <i class="status__indicator--online"></i>
+                    <div class="meta">
+                        <div class="meta__name">Cuatomer Care</div>
+                        <div class="meta__sub--light"></div>
+                    </div>
+                </div>
+                <ul class="function-list">
+                    <li class="icon-cloud"></li>
+                    <li class="icon-clock"></li>
+                    <li class="icon-dots"></li>
+                </ul>
+            </div>
+        </header>
+        <section class="message-view">
+            <div class="message--send">
+                <div class="message__bubble--send">
+                    Hi Tim!
+                </div>
+                <figure class="message__avatar">
+                    <img src="http://1.gravatar.com/avatar/89b9501f0f9e3020aab173f9a5a47683?size=80" />
+                </figure>
+            </div>
+            <div class="cf"></div>
+            <div class="message">
+                
+                <a style="margin: .5em  -.10em 0 0;" class="message__avatar_New">
+                    <span class="text-info">Customer Care</span>
+                </a>
+                <div class="message__bubble">
+                    Hi
+                </div>
+            </div>      <div class="cf"></div>
+            <div class="message--send">
+                <div class="message__bubble--send">
+                    Browserhacks looks great!
+                </div>
+                <a  class="message__avatar_New">
+                    <span class="text-info">You</span>
+                </a>
+            </div>
+        </section>
+      
+        <footer class="chat-view__input ">
+            <form >
+                
+                @Html.HiddenFor(model => model.ChatUserID)
+                <div class="input"> @Html.TextAreaFor(model => model.Message, new { @data_bind = "event: { keypress: testMessage }" }) </div>
+                </form>
+</footer>
+        
+        
+    </section>
+</div>
+    }
+    else
+    {
+        C2CChat.ViewModels.InitilizeChatViewModel model = new C2CChat.ViewModels.InitilizeChatViewModel();
+        @Html.Partial("InitializeChat",model)
+        
+    }
+}
+
+
+
+<script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
+
+
+
+
+
+<h2>Message</h2>
+
+<ul data-bind="foreach: message " class="list-group">
+    <li class="list-group-item">
+        
+        <span data-bind="text: message"> </span>
+        <span data-bind="text: repliedBy" style="margin-left:100px;"> </span>
+        <span data-bind="text: date" class="pull-right"> </span>
+    </li>
+</ul>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="/signalr/hubs" type="text/javascript"></script>
+    <script src="~/Scripts/knockout-3.3.0.js"></script>
+    <script src="~/Scripts/ChatManagerCustomer.js"></script>
+}
