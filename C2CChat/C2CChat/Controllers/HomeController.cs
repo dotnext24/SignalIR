@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace SignalIR.Controllers
+namespace C2CChat.Controllers
 {
     public class HomeController : Controller
     {
@@ -24,11 +24,6 @@ namespace SignalIR.Controllers
         {
             ViewBag.Message = "Your contact page.";
 
-            return View();
-        }
-
-        public ActionResult GetNotification()
-        {
             return View();
         }
     }

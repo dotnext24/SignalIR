@@ -1,0 +1,116 @@
+﻿
+@{
+    ViewBag.Title = "GetNotification";
+}
+<style type="text/css">
+    .container {
+        background-color: #99CCFF;
+        border: thick solid #808080;
+        padding: 20px;
+        margin: 20px;
+    }
+</style>
+
+<h2>GetNotification</h2>
+<div class="container">
+    <div id="messageTable">
+        <table border="1">
+            <thead>
+                <tr><th>Message< /th><th>EventID</th><th>Component Name</th><th>OperationCodeName</th><th>ServerName</th><th>ComponentName</th><th>SubComponentName</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        <input type="button" id="btnPause" name="Pause" value="Pause" />
+        <input type="button" id="btnResume" name="Resume" value="Resume" />
+        <input id="hdnValue" type="hidden" value="1" />
+
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+
+<script src="~/signalr/hubs"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('#btnPause').click(function () {
+            $('#hdnValue').val(0);
+        });
+        $('#btnResume').click(function () {
+            $('#hdnValue').val(1);
+        });
+        var $messageTable = $('#messageTable');
+        var $messageTableBody = $messageTable.find('tbody');
+    var ew = $.connection.myChatHub;
+
+    //var ew = $.connection.notificationHub;
+    //This method will fill all the Messages in case of any database change.
+    //Server side code will call this function to update information client.
+    ew.client.broadcastMessage = function (messageLogs) {
+        // Html encode display name and message.
+        var i = 0;
+        if ($('#hdnValue').val() == 1) {
+            $messageTableBody.empty();
+
+            $.each(messageLogs, function () {
+                var encodedName = messageLogs[i].Name;
+                var encodedEvent = messageLogs[i].EventID;
+                var encodedLogLevel = messageLogs[i].LogLevelName;
+                var encodedOCode = messageLogs[i].OperationCodeName;
+                var encodedServerName = messageLogs[i].ServerName;
+                var encodedCompName = messageLogs[i].ComponentName;
+                var encodedSubCompName = messageLogs[i].SubComponentName;
+                if (encodedLogLevel == "Fatal") {
+                    $messageTableBody.append('<tr style="background-color:Red"><td>' + encodedName + '</td><td>' + encodedEvent + '</td><td>' + encodedLogLevel + '</td><td>' + encodedOCode + '</td><td>' + encodedServerName + '</td><td>' + encodedCompName + '</td><td>' + encodedSubCompName + '</td></tr>');
+                }
+                if (encodedLogLevel == "Warning") {
+                    $messageTableBody.append('<tr style="background-color:Yellow"><td>' + encodedName + '</td><td>' + encodedEvent + '</td><td>' + encodedLogLevel + '</td><td>' + encodedOCode + '</td><td>' + encodedServerName + '</td><td>' + encodedCompName + '</td><td>' + encodedSubCompName + '</td></tr>');
+                }
+                else {
+                    $messageTableBody.append('<tr><td>' + encodedName + '</td><td>' + encodedEvent + '</td><td>' + encodedLogLevel + '</td><td>' + encodedOCode + '</td><td>' + encodedServerName + '</td><td>' + encodedCompName + '</td><td>' + encodedSubCompName + '</td></tr>');
+                }
+                i = i + 1;
+            });
+        }
+    };
+
+    //This method will fill all the Messages initially
+    $.connection.hub.start().done(function () {
+             
+        ew.server.getAllMessagesLog().done(function (messageLogs) {
+            var i = 0;
+            if ($('#hdnValue').val() == 1) {
+                $messageTableBody.empty();
+                $.each(messageLogs, function () {
+                    var encodedName = messageLogs[i].Name;
+                    var encodedEvent = messageLogs[i].EventID;
+                    var encodedLogLevel = messageLogs[i].LogLevelName;
+                    var encodedOCode = messageLogs[i].OperationCodeName;
+                    var encodedServerName = messageLogs[i].ServerName;
+                    var encodedCompName = messageLogs[i].ComponentName;
+                    var encodedSubCompName = messageLogs[i].SubComponentName;
+                    if (encodedLogLevel == "Fatal") {
+                        $messageTableBody.append('<tr style="background-color:Red"><td>' + encodedName + '</td><td>' + encodedEvent + '</td><td>' + encodedLogLevel + '</td><td>' + encodedOCode + '</td><td>' + encodedServerName + '</td><td>' + encodedCompName + '</td><td>' + encodedSubCompName + '</td></tr>');
+                    }
+                    if (encodedLogLevel == "Warning") {
+                        $messageTableBody.append('<tr style="background-color:Yellow"><td>' + encodedName + '</td><td>' + encodedEvent + '</td><td>' + encodedLogLevel + '</td><td>' + encodedOCode + '</td><td>' + encodedServerName + '</td><td>' + encodedCompName + '</td><td>' + encodedSubCompName + '</td></tr>');
+                    }
+                    else {
+                        $messageTableBody.append('<tr><td>' + encodedName + '</td><td>' + encodedEvent + '</td><td>' + encodedLogLevel + '</td><td>' + encodedOCode + '</td><td>' + encodedServerName + '</td><td>' + encodedCompName + '</td><td>' + encodedSubCompName + '</td></tr>');
+                    }
+                    i = i + 1;
+                });
+            }
+        });
+    });
+   
+    });
+</script>
+
+
+
+
+
