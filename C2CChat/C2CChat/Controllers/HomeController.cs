@@ -1,16 +1,23 @@
-﻿using System;
+﻿using C2CChat.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace C2CChat.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         public ActionResult Index()
         {
-            return View();
+            ChatMessage model = new ChatMessage();
+            var chatUser = db.ChatUsers.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            model.ChatUserID = chatUser.ID;
+            return View(model);
         }
 
         public ActionResult About()
@@ -25,6 +32,15 @@ namespace C2CChat.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
         }
     }
 }

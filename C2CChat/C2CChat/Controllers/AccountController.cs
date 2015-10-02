@@ -9,12 +9,15 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using C2CChat.Models;
+using C2CChat.ViewModels;
+using System.Data.Entity;
 
 namespace C2CChat.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         public AccountController()
             : this(new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(new ApplicationDbContext())))
         {
@@ -23,6 +26,10 @@ namespace C2CChat.Controllers
         public AccountController(UserManager<ApplicationUser> userManager)
         {
             UserManager = userManager;
+            UserManager.UserValidator = new UserValidator<ApplicationUser>(UserManager)
+            {
+                AllowOnlyAlphanumericUserNames = false,
+            };
         }
 
         public UserManager<ApplicationUser> UserManager { get; private set; }
@@ -94,6 +101,62 @@ namespace C2CChat.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+
+        [AllowAnonymous]
+        public ActionResult InitializeChat()
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> InitializeChat(InitilizeChatViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var chatUser=db.ChatUsers.Where(u => u.UserName == model.UserName).FirstOrDefault();
+                var user = new ApplicationUser() { UserName = model.UserName };
+                if (chatUser == null)
+                {
+                    var result = await UserManager.CreateAsync(user, new Random(1000).ToString());
+                    if (result.Succeeded)
+                    {
+                        await SignInAsync(user, isPersistent: false);
+                        db.ChatUsers.Add(new ChatUser() { Email = model.UserName, Date = DateTime.Now, UserName = model.UserName, IsOnline = true });
+                        int res = db.SaveChanges();
+                        return RedirectToAction("Index", "ChatSupport");
+                    }
+                    else
+                    {
+                        AddErrors(result);
+                    }
+                }
+                else
+                {
+                    chatUser.IsOnline = true;
+                    db.Entry(chatUser).State = EntityState.Modified;
+                    int res = db.SaveChanges();
+
+                   user = await UserManager.FindByNameAsync(model.UserName);
+
+                    if (user != null)
+                    {
+
+                        await SignInAsync(user, isPersistent: false);
+                    }
+
+                    
+                    return RedirectToAction("Index", "ChatSupport");
+                }
+            }
+
+            // If we got this far, something failed, redisplay form
+            return RedirectToAction("Index", "ChatSupport");
+        }
+
 
         //
         // POST: /Account/Disassociate

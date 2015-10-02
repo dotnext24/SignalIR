@@ -1,7 +1,8 @@
 ﻿@model C2CChat.Models.ChatMessage
-
+@using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Index";
+    
 }
 
 <h2>Index</h2>
@@ -9,7 +10,7 @@
 
 <form data-bind="submit: createMessage">
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
         <h4>ChatMessage</h4>
         <hr />
@@ -31,14 +32,9 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ChatUserID, "ChatUserID", new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.ChatUserID, new { @data_bind = "value: newMessageChatUserID" })
-                @Html.ValidationMessageFor(model => model.ChatUserID)
-            </div>
-        </div>
-
+        
+         @Html.TextBoxFor(model => model.ChatUserID )
+       
         <div class="form-group">
             @Html.LabelFor(model => model.Date, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
