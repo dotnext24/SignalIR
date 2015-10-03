@@ -5,7 +5,101 @@
     
 }
 
-<h2>Index</h2>
+
+<link href="~/Content/ChatDesign/css/styleCompany.css" rel="stylesheet" />
+
+<h1>Chat Support</h1>
+<div class="window">
+    <aside class="conv-list-view">
+        <header class="conv-list-view__header">
+            <div class="cf">
+                <ul class="close-button-list">
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+                <ul class="function-list">
+                    <li class="icon-lupe"></li>
+                </ul>
+            </div>
+        </header>
+       
+        <ul class="conv-list" data-bind="foreach: online">
+            <p data-bind="text:newChatUserID"></p>
+            <li>
+                <div class="status">
+                    <i class="status__indicator--unread-message"></i>
+
+                    <div class="meta" >
+
+                        <div  class="meta__name onlineUser" data-bind="text: name, click: getFromOnline.bind($data, id), attr:{ id: id }"></div>
+                         
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </aside>
+    <section class="chat-view">
+        <header class="chat-view__header">
+            <div class="cf">
+                <div class="status">
+                    <i class="status__indicator--online"></i>
+                    <div class="meta">
+                        <div class="meta__name">Customer Care</div>
+                        <div class="meta__sub--light"></div>
+                    </div>
+                </div>
+                <ul class="function-list">
+                    <li class="icon-cloud"></li>
+                    <li class="icon-clock"></li>
+                    <li class="icon-dots"></li>
+                </ul>
+            </div>
+        </header>
+        <section class="message-view">
+
+            <div data-bind="foreach: message " style="margin-bottom:100px;">
+
+                <!-- ko if: repliedBy -->
+                <div class="message">
+                    <a style="margin: .5em  -.10em 0 0;" class="message__avatar_New">
+                        <span class="text-info">Customer Care</span>
+                    </a>
+                    <div class="message__bubble" data-bind="text: message">
+
+                    </div>
+                </div>
+                <div class="cf"></div>
+                <!-- /ko -->
+                <!-- ko ifnot: repliedBy  -->
+                <div class="message--send">
+                    <div class="message__bubble--send" data-bind="text: message">
+
+                    </div>
+                    <a class="message__avatar_New">
+                        <span class="text-info">You</span>
+                    </a>
+                </div>
+                <div class="cf"></div>
+                <!-- /ko -->
+
+
+            </div>
+            @Html.TextBoxFor(model => model.ChatUserID)
+        </section>
+        
+    </section>
+   
+    <div class="cf"></div>
+    <footer class="chat-view__input ">
+        <form>
+           
+            <div class="input"> @Html.TextAreaFor(model => model.Message, new { @data_bind = "event: { keypress: testMessage }" }) </div>
+        </form>
+    </footer>
+
+</div>
+
 
 
 <form data-bind="submit: createMessage">
@@ -33,7 +127,7 @@
         </div>
 
         
-         @Html.TextBoxFor(model => model.ChatUserID )
+         
        
         <div class="form-group">
             @Html.LabelFor(model => model.Date, new { @class = "control-label col-md-2" })
@@ -79,5 +173,5 @@
 <script src="/signalr/hubs" type="text/javascript"></script>
 <script src="~/Scripts/knockout-3.3.0.js"></script>
 
-<script src="~/Scripts/ChatManager.js"></script>
+<script src="~/Scripts/ChatManagerCompany.js"></script>
 }

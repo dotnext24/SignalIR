@@ -2,6 +2,43 @@
 
 $(function () {
 
+    //jquery
+    $(".onlineUser").click(function () {
+        alert("");
+    });
+
+    //new
+    function onlineViewModel(id, name) {
+        this.id = id;
+        this.name = ko.observable(name);
+        var self = this;
+
+
+         this.hub = $.connection.chatHub;
+        this.message = ko.observableArray([]);
+        //new
+        this.newChatUserID = ko.observable();
+        var newChatUserID=this.newChatUserID;
+        this.getFromOnline = function (id) {
+            newChatUserID = id;
+            $('#ChatUserID').val(id)
+            alert(newChatUserID);
+            this.hub.client.chatMessageRetrieved = function (allMessage) {
+                var mappedMessage = $.map(allMessage, function (message) {
+                    if (message.ChatUserID == $('#ChatUserID').val())
+                        return new chatMessageViewModel(message.ID, message.Message,
+                            message.RepliedBy, message.ChatUserID, message.Date, self)
+                });
+
+                message(mappedMessage);
+            }
+
+            console.log('Person selected!' + id);
+        }
+
+        
+    }
+    
 
     function chatMessageViewModel(id, message, repliedBy, chatUserID, date, owner) {
         this.id = id;
@@ -34,6 +71,13 @@ $(function () {
     function messageViewModel() {
         this.hub = $.connection.chatHub;
         this.message = ko.observableArray([]);
+
+        //new
+        this.online = ko.observableArray([]);
+        var online = this.online;
+       
+
+
         this.newMessageMessage = ko.observable();
         this.newMessageRepliedBy = ko.observable();
         this.newMessageChatUserID = $('#ChatUserID').val();
@@ -46,6 +90,24 @@ $(function () {
             this.hub.server.getAll();
         }
 
+
+        //new
+        this.init = function () {
+            this.hub.server.getOnline();
+        }
+        this.hub.client.onlineUserRetrieved = function (allonline) {
+            var mappedMessage = $.map(allonline, function (online) {
+                return new onlineViewModel(online.ID, online.UserName,
+                         self)
+            });
+
+            online(mappedMessage);
+        }
+
+
+        
+
+
         this.hub.client.chatMessageRetrieved = function (allMessage) {
             var mappedMessage = $.map(allMessage, function (message) {
                 if (message.ChatUserID == $('#ChatUserID').val())
@@ -55,6 +117,24 @@ $(function () {
 
             message(mappedMessage);
         }
+
+
+
+
+
+
+        this.hub.client.chatMessageRetrieved = function (allMessage) {
+            var mappedMessage = $.map(allMessage, function (message) {
+                if (message.ChatUserID == $('#ChatUserID').val())
+                    return new chatMessageViewModel(message.ID, message.Message,
+                        message.RepliedBy, message.ChatUserID, message.Date, self)
+            });
+
+            message(mappedMessage);
+        }
+
+        
+        
 
         this.hub.client.chatMessageUpdated = function (updatedMessage) {
             var msg = ko.utils.arrayFilter(message(),
@@ -110,14 +190,14 @@ $(function () {
             }
         }
 
+       
+
 
         this.testMessage = function (d, e) {
             if (e.keyCode === 13)
             {
-               
                 var msg = { message: $('#Message').val(),  chatUserID: $('#ChatUserID').val(), date: new Date() };
 
-          
                 this.hub.server.add(msg).done(function () {
                     console.log('Person saved!');
                 }).fail(function (error) {
@@ -132,13 +212,15 @@ $(function () {
             }
             return true;
         };
+
+       
     }
 
     var viewModel = new messageViewModel();
     ko.applyBindings(viewModel);
-
+   
     $.connection.hub.start(function () {
         viewModel.init();
-
+        
     });
 });

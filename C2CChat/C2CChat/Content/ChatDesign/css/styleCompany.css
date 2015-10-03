@@ -1,14 +1,15 @@
 ﻿
+
 .window {
   position: relative;
   margin: 50px auto;
-  width: 100%;
-  min-height: 540px;
+  width: 840px;
+  height: 640px;
   border-radius: 4px;
   border: 1px solid #C1C1BF;
   box-shadow: 0 0 100px rgba(0, 0, 0, 0.3);
   background: white;
-  overflow:hidden;
+  overflow: hidden;
 }
 
 .conv-list-view {
@@ -18,7 +19,6 @@
   box-shadow: 0 0 4px rgba(128, 128, 128, 0.7);
   background: white;
   z-index: 1;
-  
 }
 
 .conv-list-view__header {
@@ -149,18 +149,6 @@
   margin: 0 .5em 0 0;
   overflow: hidden;
 }
-
-.message__avatar_New {
-  position: relative;
-  display: block;
-  float: left;
-  width: auto;
-  height: 2.5em;
-  border-radius: .3em;
-  margin: .10em .5em 0 0;
-  overflow: hidden;
-}
-
 .status__avatar:before, .status__avatar--small:before, .status__avatar--facebook:before, .message__avatar:before {
   position: absolute;
   content: '';
@@ -170,8 +158,6 @@
   bottom: 0;
   box-shadow: 0 0 0.125em #1a1a1a inset, 0 0 0.312em #1a1a1a inset;
 }
-
-
 .status__avatar img, .status__avatar--small img, .status__avatar--facebook img, .message__avatar img {
   width: inherit;
   height: inherit;
@@ -216,14 +202,13 @@
 
 .chat-view {
   position: absolute;
-  left: 0px;
+  left: 270px;
   right: 0;
   bottom: 0;
   top: 0;
   padding: .625em 1.25em 1.25em 1.25em;
   background: #F2F1EC;
   z-index: 0;
-  overflow:scroll;
 }
 
 .chat-view__header {
@@ -244,7 +229,6 @@
 .message-view {
   padding: 1em;
   font-size: .9em;
- 
 }
 
 .message--send {
@@ -289,15 +273,14 @@
   position: absolute;
   bottom: 0;
   left: 0;
-  width: 98%;
+  width: 100%;
   padding: .25em .5em .5em .75em;
 }
 
 .input {
   position: relative;
-  float: left;
-  
-  width: 100%;
+  float: right;
+  width: 65%;
   margin-top: 1px;
   background: white;
   padding: 0 .3em;
@@ -321,16 +304,15 @@
   font-size: 1.1em;
   appearance: none;
   border: none;
-  width: 100%;
+  width: 93%;
   outline: none;
-  height:100px;
 }
 
 .input__emoticon {
   position: relative;
   display: inline-block;
   float: right;
-  margin-top: 10px;
+  margin-top: .32em;
   height: .8em;
   width: .8em;
   opacity: .5;

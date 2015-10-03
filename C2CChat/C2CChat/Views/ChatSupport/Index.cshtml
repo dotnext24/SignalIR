@@ -16,13 +16,13 @@
     {
         <div class="window col-lg-12">
     
-    <section class="chat-view">
+       <section class="chat-view">
         <header class="chat-view__header">
             <div class="cf">
                 <div class="status">
                     <i class="status__indicator--online"></i>
                     <div class="meta">
-                        <div class="meta__name">Cuatomer Care</div>
+                        <div class="meta__name">Customer Care</div>
                         <div class="meta__sub--light"></div>
                     </div>
                 </div>
@@ -34,44 +34,49 @@
             </div>
         </header>
         <section class="message-view">
-            <div class="message--send">
-                <div class="message__bubble--send">
-                    Hi Tim!
+            
+            <div data-bind="foreach: message " style="margin-bottom:100px;">
+
+                <!-- ko if: repliedBy -->
+                <div class="message">
+
+                    <a style="margin: .5em  -.10em 0 0;" class="message__avatar_New">
+                        <span class="text-info">Customer Care</span>
+                    </a>
+                    <div class="message__bubble" data-bind="text: message">
+                      
+                    </div>
+                </div>      
+                <div class="cf"></div>
+                <!-- /ko -->
+                <!-- ko ifnot: repliedBy  -->
+                <div class="message--send">
+                    <div class="message__bubble--send" data-bind="text: message">
+                        
+                    </div>
+                    <a class="message__avatar_New">
+                        <span class="text-info">You</span>
+                    </a>
                 </div>
-                <figure class="message__avatar">
-                    <img src="http://1.gravatar.com/avatar/89b9501f0f9e3020aab173f9a5a47683?size=80" />
-                </figure>
-            </div>
-            <div class="cf"></div>
-            <div class="message">
+                <div class="cf"></div>
+                <!-- /ko -->
+
                 
-                <a style="margin: .5em  -.10em 0 0;" class="message__avatar_New">
-                    <span class="text-info">Customer Care</span>
-                </a>
-                <div class="message__bubble">
-                    Hi
-                </div>
-            </div>      <div class="cf"></div>
-            <div class="message--send">
-                <div class="message__bubble--send">
-                    Browserhacks looks great!
-                </div>
-                <a  class="message__avatar_New">
-                    <span class="text-info">You</span>
-                </a>
             </div>
         </section>
       
-        <footer class="chat-view__input ">
-            <form >
-                
-                @Html.HiddenFor(model => model.ChatUserID)
-                <div class="input"> @Html.TextAreaFor(model => model.Message, new { @data_bind = "event: { keypress: testMessage }" }) </div>
-                </form>
-</footer>
+        
         
         
     </section>
+            <div class="cf"></div>
+            <footer class="chat-view__input ">
+                <form>
+
+                    @Html.HiddenFor(model => model.ChatUserID)
+                    <div class="input"> @Html.TextAreaFor(model => model.Message, new { @data_bind = "event: { keypress: testMessage }" }) </div>
+                </form>
+            </footer>
 </div>
     }
     else
@@ -87,15 +92,17 @@
 <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
 
 
-
-
-
 <h2>Message</h2>
 
 <ul data-bind="foreach: message " class="list-group">
     <li class="list-group-item">
-        
+        <!-- ko if: repliedBy -->
         <span data-bind="text: message"> </span>
+        <!-- /ko -->
+        <!-- ko ifnot: repliedBy  -->
+        <span data-bind="text: message" style="color:red"> </span>
+        <!-- /ko -->
+        
         <span data-bind="text: repliedBy" style="margin-left:100px;"> </span>
         <span data-bind="text: date" class="pull-right"> </span>
     </li>

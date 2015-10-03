@@ -15,8 +15,10 @@ namespace C2CChat.Controllers
         public ActionResult Index()
         {
             ChatMessage model = new ChatMessage();
-            var chatUser = db.ChatUsers.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            model.ChatUserID = chatUser.ID;
+            var chatUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+            ViewBag.UserId = chatUser.Id;
+            model.RepliedBy = User.Identity.Name;
+
             return View(model);
         }
 

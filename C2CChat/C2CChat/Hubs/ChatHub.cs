@@ -19,6 +19,15 @@ namespace C2CChat.Hubs
             }
         }
 
+        public void GetOnline()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var users = context.ChatUsers.Where(o=>o.IsOnline).ToArray();
+                Clients.Caller.onlineUserRetrieved(users);
+            }
+        }
+
         public bool Add(ChatMessage newChatMessage)
         {
             bool result = false;

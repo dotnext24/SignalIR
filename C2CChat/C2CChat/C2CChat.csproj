@@ -200,6 +200,7 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\ChatDesign\css\style.css" />
+    <Content Include="Content\ChatDesign\css\styleCompany.css" />
     <Content Include="Content\ChatDesign\index.html" />
     <Content Include="Content\ChatDesign\js\prefixfree.min.js" />
     <Content Include="Content\header.png" />
@@ -213,6 +214,7 @@
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Content\ChatDesign\scss\style.scss" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\ChatManagerCompany.js" />
     <Content Include="Scripts\ChatManagerCustomer.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
