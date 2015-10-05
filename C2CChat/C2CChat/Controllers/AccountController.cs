@@ -358,6 +358,29 @@ namespace C2CChat.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        // POST: /Account/LogOff
+       
+    
+        public JsonResult LogOffOnClose()
+        {
+            if(User.Identity.IsAuthenticated)
+            {
+                var chatUser = db.ChatUsers.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+                if(chatUser!=null)
+                {
+                    chatUser.IsOnline = false;
+                    db.Entry(chatUser).State = EntityState.Modified;
+                    db.SaveChanges();
+                }
+
+
+                
+            }
+
+            AuthenticationManager.SignOut();
+            return Json("OK", JsonRequestBehavior.AllowGet);
+        }
+
         //
         // GET: /Account/ExternalLoginFailure
         [AllowAnonymous]

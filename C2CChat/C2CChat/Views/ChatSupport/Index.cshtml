@@ -99,4 +99,27 @@
     <script src="/signalr/hubs" type="text/javascript"></script>
     <script src="~/Scripts/knockout-3.3.0.js"></script>
     <script src="~/Scripts/ChatManagerCustomer.js"></script>
+
+    <script>
+    window.onbeforeunload = function (evt) {
+        var message = 'You have started writing or editing a post.';
+        var loginId = '<%= Session["LoginId"].ToString() %>';
+        console.log('in');
+
+        $.ajax({
+            url: "/Account/LogOffOnClose",
+            contentType: "application/json; charset=utf-8",
+            type: "GET",
+            success: function (data) {
+                alert(data);
+            },
+            error: function (x, y, z) {
+                alert(x.responseText + "  " + x.status);
+            }
+        });
+    }
+</script>
+
+
+
 }
