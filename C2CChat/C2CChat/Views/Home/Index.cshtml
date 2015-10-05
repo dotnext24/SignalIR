@@ -2,176 +2,84 @@
 @using Microsoft.AspNet.Identity;
 @{
     ViewBag.Title = "Index";
-    
+
 }
 
 
-<link href="~/Content/ChatDesign/css/styleCompany.css" rel="stylesheet" />
+<link href="~/Content/ChatDesign/css/style.css" rel="stylesheet" />
+
 
 <h1>Chat Support</h1>
-<div class="window">
-    <aside class="conv-list-view">
-        <header class="conv-list-view__header">
-            <div class="cf">
-                <ul class="close-button-list">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-                <ul class="function-list">
-                    <li class="icon-lupe"></li>
-                </ul>
-            </div>
-        </header>
-       
-        <ul class="conv-list" data-bind="foreach: online">
-            <p data-bind="text:newChatUserID"></p>
-            <li>
-                <div class="status">
-                    <i class="status__indicator--unread-message"></i>
 
-                    <div class="meta" >
+@{
 
-                        <div  class="meta__name onlineUser" data-bind="text: name, click: getFromOnline.bind($data, id), attr:{ id: id }"></div>
-                         
-                    </div>
-                </div>
-            </li>
-        </ul>
-    </aside>
-    <section class="chat-view">
-        <header class="chat-view__header">
-            <div class="cf">
-                <div class="status">
-                    <i class="status__indicator--online"></i>
-                    <div class="meta">
-                        <div class="meta__name">Customer Care</div>
-                        <div class="meta__sub--light"></div>
-                    </div>
-                </div>
-                <ul class="function-list">
-                    <li class="icon-cloud"></li>
-                    <li class="icon-clock"></li>
-                    <li class="icon-dots"></li>
-                </ul>
-            </div>
-        </header>
-        <section class="message-view">
+    <div class="col-lg-6" style="margin:auto">
+        <h3>Online Users</h3>
+        <table class="table-responsive table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>User Name</th>
+                    <th></th>
+                </tr>
 
-            <div data-bind="foreach: message " style="margin-bottom:100px;">
-
-                <!-- ko if: repliedBy -->
-                <div class="message">
-                    <a style="margin: .5em  -.10em 0 0;" class="message__avatar_New">
-                        <span class="text-info">Customer Care</span>
-                    </a>
-                    <div class="message__bubble" data-bind="text: message">
-
-                    </div>
-                </div>
-                <div class="cf"></div>
-                <!-- /ko -->
-                <!-- ko ifnot: repliedBy  -->
-                <div class="message--send">
-                    <div class="message__bubble--send" data-bind="text: message">
-
-                    </div>
-                    <a class="message__avatar_New">
-                        <span class="text-info">You</span>
-                    </a>
-                </div>
-                <div class="cf"></div>
-                <!-- /ko -->
+            </thead>
+            <tbody>
+                @{
+                    int count = 1;
+                }
+                @foreach (var item in ViewBag.OnlineUsers as IEnumerable<C2CChat.Models.ChatUser>)
+                { 
+                    <tr>
+                    <td>@count</td>
+                    <td>@item.UserName </td>
+                      <td><a class="openPopup" href="@Url.Action("Support", "Home", new { chatUserId=item.ID })">StartChat</a>  </td>
+                    </tr>
+                    count += 1;
+                }
+            </tbody>
+        </table>
 
 
-            </div>
-            @Html.TextBoxFor(model => model.ChatUserID)
-        </section>
-        
-    </section>
-   
-    <div class="cf"></div>
-    <footer class="chat-view__input ">
-        <form>
-           
-            <div class="input"> @Html.TextAreaFor(model => model.Message, new { @data_bind = "event: { keypress: testMessage }" }) </div>
-        </form>
-    </footer>
-
-</div>
-
-
-
-<form data-bind="submit: createMessage">
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>ChatMessage</h4>
-        <hr />
-        @Html.ValidationSummary(true)
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Message, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Message, new { @data_bind = "value: newMessageMessage" })
-                @Html.ValidationMessageFor(model => model.Message)
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.RepliedBy, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.RepliedBy, new { @data_bind = "value: newMessageRepliedBy" })
-                @Html.ValidationMessageFor(model => model.RepliedBy)
-            </div>
-        </div>
-
-        
-         
-       
-        <div class="form-group">
-            @Html.LabelFor(model => model.Date, new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Date, new { @data_bind = "value: newMessageDate" })
-                @Html.ValidationMessageFor(model => model.Date)
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
-            </div>
-        </div>
     </div>
-</form>
+}
+    
 
-<h2>Message</h2>
-<table data-bind="template: { name: 'chatTemplate', foreach: message }, visible: message().length > 0">
-    <thead>
-        <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-        </tr>
-    </thead>
-</table>
-
-<script type="text/html" id="chatTemplate">
-    <!--Data Template-->
-    <tr>
-        <td><input class="ui-corner-all" data-bind="value: message, valueUpdate: 'afterkeydown'" /></td>
-        <td><input class="ui-corner-all" data-bind="value: repliedBy, valueUpdate: 'afterkeydown'" /></td>
-        <td><input class="ui-corner-all" data-bind="value: chatUserID, valueUpdate: 'afterkeydown'" /></td>
-        <td><input class="ui-button" type="button" href="#" data-bind="click: removeChatMessage" value="Delete" /></td>
-    </tr>
-</script>
-
+<div class="clearfix"></div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-<script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
-<script src="/signalr/hubs" type="text/javascript"></script>
-<script src="~/Scripts/knockout-3.3.0.js"></script>
+    <script src="~/Scripts/jquery.signalR-2.2.0.min.js"></script>
+    <script src="/signalr/hubs" type="text/javascript"></script>
+    <script src="~/Scripts/knockout-3.3.0.js"></script>
+    <script src="~/Scripts/ChatManagerCustomer.js"></script>
+    <script>
+    window.setTimeout(
+function () {
+    location.reload(true)
+},
+3000
+);
 
-<script src="~/Scripts/ChatManagerCompany.js"></script>
+    $(function () {
+
+        $('.openPopup').click(function () {
+            var url = $(this).attr("href");
+                newwindow = window.open(url, "Live Chat", 'height=640,width=600');
+                if (window.focus) { newwindow.focus() }
+                return false;
+            
+        })
+        })
+
+        
+    
+
+</script>
+<script type="text/javascript">
+    
+
+    
+</script>
+
 }

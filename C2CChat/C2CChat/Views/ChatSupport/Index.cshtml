@@ -9,7 +9,7 @@
 <link href="~/Content/ChatDesign/css/style.css" rel="stylesheet" />
 
 
-<h1>Chat Support</h1>
+<h2 class="text-center">Chat Support</h2>
 
 @{
     if(User.Identity.IsAuthenticated)
@@ -41,7 +41,7 @@
                 <div class="message">
 
                     <a style="margin: .5em  -.10em 0 0;" class="message__avatar_New">
-                        <span class="text-info">Customer Care</span>
+                        <span class="text-info"></span>
                     </a>
                     <div class="message__bubble" data-bind="text: message">
                       
@@ -55,7 +55,7 @@
                         
                     </div>
                     <a class="message__avatar_New">
-                        <span class="text-info">You</span>
+                        <span class="text-info"></span>
                     </a>
                 </div>
                 <div class="cf"></div>
@@ -92,21 +92,6 @@
 <script src='http://codepen.io/assets/libs/fullpage/jquery.js'></script>
 
 
-<h2>Message</h2>
-
-<ul data-bind="foreach: message " class="list-group">
-    <li class="list-group-item">
-        <!-- ko if: repliedBy -->
-        <span data-bind="text: message"> </span>
-        <!-- /ko -->
-        <!-- ko ifnot: repliedBy  -->
-        <span data-bind="text: message" style="color:red"> </span>
-        <!-- /ko -->
-        
-        <span data-bind="text: repliedBy" style="margin-left:100px;"> </span>
-        <span data-bind="text: date" class="pull-right"> </span>
-    </li>
-</ul>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

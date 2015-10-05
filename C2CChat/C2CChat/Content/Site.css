@@ -41,3 +41,28 @@ input[type="checkbox"].input-validation-error {
 .validation-summary-valid {
     display: none;
 }
+
+
+    @media (min-width: 600px) {
+        .verticalMargin{
+        margin-top:5px;
+        }
+    }
+   @media (min-width: 900px) {
+        .verticalMargin{
+        margin-top:10px;
+        }
+    }
+
+   @media (max-width: 600px) {
+        #liveChat{
+        margin-top:-55px;
+        }
+        .verticalMargin{
+        margin-top:20px;
+        }
+        
+        
+    }
+
+  

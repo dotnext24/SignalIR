@@ -86,6 +86,7 @@ namespace C2CChat.Controllers
             if (ModelState.IsValid)
             {
                 var user = new ApplicationUser() { UserName = model.UserName };
+                user.UserType = UserType.ChatAdmin;
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
@@ -121,6 +122,7 @@ namespace C2CChat.Controllers
                 var user = new ApplicationUser() { UserName = model.UserName };
                 if (chatUser == null)
                 {
+                    user.UserType = UserType.ChatUser;
                     var result = await UserManager.CreateAsync(user, new Random(1000).ToString());
                     if (result.Succeeded)
                     {

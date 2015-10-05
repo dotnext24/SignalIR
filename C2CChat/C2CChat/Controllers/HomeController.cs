@@ -16,24 +16,24 @@ namespace C2CChat.Controllers
         {
             ChatMessage model = new ChatMessage();
             var chatUser = db.Users.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
-            ViewBag.UserId = chatUser.Id;
+            ViewBag.UserId = 1;
             model.RepliedBy = User.Identity.Name;
 
+            List<ChatUser> usersOnline = db.ChatUsers.Where(u => u.IsOnline == true).ToList();
+            ViewBag.OnlineUsers = usersOnline;
             return View(model);
         }
 
-        public ActionResult About()
+        public ActionResult Support(int chatUserId)
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            ChatMessage model = new ChatMessage();
+            if (User.Identity.IsAuthenticated)
+            {
+                var chatUser = db.ChatUsers.Where(u => u.UserName == User.Identity.Name).FirstOrDefault();
+                ViewBag.RepliedBy = User.Identity.Name;
+                model.ChatUserID = chatUserId;
+            }
+            return View(model);
         }
 
         protected override void Dispose(bool disposing)

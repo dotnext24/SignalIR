@@ -185,6 +185,10 @@
     <Compile Include="Migrations\201510011110593_initialCtrate.Designer.cs">
       <DependentUpon>201510011110593_initialCtrate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201510050633180_usertype.cs" />
+    <Compile Include="Migrations\201510050633180_usertype.Designer.cs">
+      <DependentUpon>201510050633180_usertype.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ChatMessage.cs" />
@@ -262,6 +266,9 @@
     <Content Include="Views\ChatSupport\Index.cshtml" />
     <Content Include="Views\ChatSupport\InitializeChat.cshtml" />
     <Content Include="Views\ChatSupport\ChatRoom.cshtml" />
+    <Content Include="Views\Home\ChatRoom.cshtml" />
+    <Content Include="Views\Home\InitializeChat.cshtml" />
+    <Content Include="Views\Home\Support.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -280,6 +287,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201510011110593_initialCtrate.resx">
       <DependentUpon>201510011110593_initialCtrate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201510050633180_usertype.resx">
+      <DependentUpon>201510050633180_usertype.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
